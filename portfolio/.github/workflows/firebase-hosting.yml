@@ -1,0 +1,58 @@
+name: Azeredo Design | Firebase Hosting
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "portfolio/**"
+      - "firebase.json"
+      - ".github/workflows/firebase-hosting.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "portfolio/**"
+      - "firebase.json"
+      - ".github/workflows/firebase-hosting.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+concurrency:
+  group: firebase-hosting-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Publicar Firebase Hosting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter código
+        uses: actions/checkout@v4
+
+      - name: Verificar arquivos essenciais
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s portfolio/index.html
+          test -s portfolio/assets/app.js
+          test -s portfolio/assets/projects.js
+          test -s portfolio/assets/config.js
+          test -s portfolio/assets/style.css
+          test -s portfolio/assets/Azeredo-Design-Portfolio.pdf
+          test -s firebase.json
+          node --check portfolio/assets/app.js
+          node --check portfolio/assets/projects.js
+          node --check portfolio/assets/config.js
+          node -e "JSON.parse(require('fs').readFileSync('firebase.json','utf8'));"
+
+      - name: Deploy automático Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AZEREDO }}
+          projectId: azeredo-design-institucional
+          channelId: ${{ github.event_name == 'push' && 'live' || '' }}
+          entryPoint: .
