@@ -3,8 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0b1423">
+  <meta name="theme-color" content="#142a47">
   <meta name="description" content="Azeredo Design & Tecnologia: projetos sob medida em inteligência artificial, ERPs, aplicativos, automação e experiências digitais. Explore nosso portfólio.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Azeredo Design — Ideias em soluções digitais">
   <meta property="og:description" content="Estratégia, design e desenvolvimento de software sob medida. Conheça os projetos.">
@@ -91,7 +94,16 @@
       <div class="container">
         <div class="section-intro portfolio-heading"><div><p class="eyebrow">03 / PROJETOS SELECIONADOS</p><h2>O trabalho <span>fala por si.</span></h2></div><div class="projects-count"><strong id="countProjects">00</strong><span>projetos em destaque<br>e novas ideias em evolução</span></div></div>
         <div class="filters" role="group" aria-label="Filtrar projetos"><button class="filter active" data-filter="todos" aria-pressed="true">Todos os projetos</button><button class="filter" data-filter="ia" aria-pressed="false">IA & Automação</button><button class="filter" data-filter="gestao" aria-pressed="false">Gestão & ERP</button><button class="filter" data-filter="web" aria-pressed="false">Sites & Web</button><button class="filter" data-filter="educacao" aria-pressed="false">Educação & Interativo</button><button class="filter" data-filter="operacao" aria-pressed="false">Operação & Logística</button></div>
-        <div class="project-grid" id="projectGrid" aria-live="polite"></div>
+        <div class="portfolio-search">
+          <label for="projectSearch">Encontre o projeto ideal para conhecer</label>
+          <div class="search-input-wrap"><span aria-hidden="true">⌕</span>
+            <input type="search" id="projectSearch" placeholder="Pesquisar por nome, tecnologia ou segmento" maxlength="100" autocomplete="off">
+            <button type="button" id="clearProjectSearch" aria-label="Limpar pesquisa" hidden>Limpar ✕</button>
+          </div>
+          <span class="search-result" id="projectResultText" aria-live="polite"></span>
+        </div>
+        <div class="project-grid" id="projectGrid"></div>
+        <div id="projectsEmpty" class="projects-empty" hidden><p>Nenhum projeto corresponde à pesquisa.</p><button class="button button-ghost" type="button" id="resetProjectFilters">Ver todos os projetos →</button></div>
         <p class="project-disclaimer">Pré-visualizações ilustrativas. Funcionalidades e estágio de cada solução variam conforme o projeto. Demonstrações de sistemas internos são disponibilizadas mediante autorização.</p>
       </div>
     </section>
@@ -100,11 +112,22 @@
       <div class="container"><div class="section-intro"><div><p class="eyebrow">04 / NOSSA FORMA DE CRIAR</p><h2>Do desafio à <span>solução.</span></h2></div><p>Uma abordagem orientada por negócios, com atenção à experiência, à segurança e à continuidade do produto.</p></div><div class="steps"><article><span>01 / IMERSÃO</span><h3>Entender</h3><p>Mapeamos necessidades, pessoas e objetivos.</p></article><article><span>02 / CONCEITO</span><h3>Desenhar</h3><p>Definimos fluxos, interfaces e arquitetura.</p></article><article><span>03 / EXECUÇÃO</span><h3>Construir</h3><p>Implementamos, integramos e validamos.</p></article><article><span>04 / EVOLUÇÃO</span><h3>Evoluir</h3><p>Acompanhamos melhorias e novas oportunidades.</p></article></div></div>
     </section>
 
+    <section class="section faq" id="perguntas">
+      <div class="container faq-layout">
+        <div><p class="eyebrow">05 / INFORMAÇÕES COMERCIAIS</p><h2>Perguntas que <span>ajudam a começar.</span></h2><p>Os projetos são personalizados. Cada solução começa pela compreensão de um desafio real.</p></div>
+        <div class="faq-items">
+          <details><summary>Vocês desenvolvem sistemas personalizados?<span aria-hidden="true">+</span></summary><p>Sim. O desenvolvimento pode ser planejado para necessidades específicas de gestão, finanças, processos internos e operações de empresas.</p></details>
+          <details><summary>Posso solicitar melhorias em um aplicativo existente?<span aria-hidden="true">+</span></summary><p>Podemos avaliar melhorias e integrações, conforme a tecnologia utilizada e as condições de acesso ao código e à infraestrutura do projeto.</p></details>
+          <details><summary>Como é preparada uma proposta comercial?<span aria-hidden="true">+</span></summary><p>Primeiro identificamos o objetivo, as funcionalidades e as prioridades. A partir disso, é definido um escopo com entregas e condições comerciais.</p></details>
+          <details><summary>O sistema poderá receber novas funcionalidades?<span aria-hidden="true">+</span></summary><p>Sim, a evolução pode ser planejada em fases, respeitando a arquitetura do produto, o orçamento e as necessidades da operação.</p></details>
+        </div>
+      </div>
+    </section>
     <section class="section presentation" id="apresentacao">
-      <div class="container presentation-grid"><div class="presentation-copy"><p class="eyebrow">05 / APRESENTAÇÃO INSTITUCIONAL</p><h2>Conheça nossa <span>forma de construir.</span></h2><p>Uma apresentação resumida dos serviços, da abordagem e dos principais projetos da Azeredo Design. Ideal para compartilhar com clientes, empresas e parceiros.</p><div class="presentation-buttons"><a class="button button-primary" id="downloadPdf" href="assets/Azeredo-Design-Portfolio.pdf" download>Baixar apresentação PDF ↓</a><button class="button button-ghost" id="openPresentation" type="button">Ver apresentação online ↗</button></div><small class="presentation-note">Apresentação comercial sem informações confidenciais de clientes.</small></div><div class="deck-wrap" aria-hidden="true"><div class="deck-sheet deck-back"></div><div class="deck-sheet deck-mid"></div><div class="deck-sheet deck-front"><div class="deck-head"><span class="deck-logo">A<span>.</span></span><span>2026 / PORTFÓLIO</span></div><div class="deck-main"><small>AZEREDO DESIGN & TECNOLOGIA</small><strong>Ideias que se tornam<br><em>soluções digitais.</em></strong><span class="deck-rule"></span></div><div class="deck-footer">ESTRATÉGIA · DESIGN · TECNOLOGIA <span>01 / 06</span></div></div></div></div>
+      <div class="container presentation-grid"><div class="presentation-copy"><p class="eyebrow">06 / APRESENTAÇÃO INSTITUCIONAL</p><h2>Conheça nossa <span>forma de construir.</span></h2><p>Uma apresentação resumida dos serviços, da abordagem e dos principais projetos da Azeredo Design. Ideal para compartilhar com clientes, empresas e parceiros.</p><div class="presentation-buttons"><a class="button button-primary" id="downloadPdf" href="assets/Azeredo-Design-Portfolio.pdf" download>Baixar apresentação PDF ↓</a><button class="button button-ghost" id="openPresentation" type="button">Ver apresentação online ↗</button></div><small class="presentation-note">Apresentação comercial sem informações confidenciais de clientes.</small></div><div class="deck-wrap" aria-hidden="true"><div class="deck-sheet deck-back"></div><div class="deck-sheet deck-mid"></div><div class="deck-sheet deck-front"><div class="deck-head"><span class="deck-logo">A<span>.</span></span><span>2026 / PORTFÓLIO</span></div><div class="deck-main"><small>AZEREDO DESIGN & TECNOLOGIA</small><strong>Ideias que se tornam<br><em>soluções digitais.</em></strong><span class="deck-rule"></span></div><div class="deck-footer">ESTRATÉGIA · DESIGN · TECNOLOGIA <span>01 / 06</span></div></div></div></div>
     </section>
 
-    <section class="section contact" id="contato"><div class="container contact-wrap"><div><p class="eyebrow">06 / VAMOS CRIAR ALGO?</p><h2>Seu próximo projeto <em>começa aqui.</em></h2><p>Conte qual desafio sua empresa precisa resolver. Vamos conversar sobre o caminho mais adequado para transformá-lo em uma solução digital.</p><button type="button" id="contactTrigger" class="button button-primary contact-button">Solicitar uma proposta <span>↗</span></button><p class="contact-status" id="contactStatus">Canal comercial em configuração para o lançamento.</p></div><div class="contact-decoration"><span>VAMOS<br><i>CRIAR</i><br>JUNTOS.</span><b>↗</b></div></div></section>
+    <section class="section contact" id="contato"><div class="container contact-wrap"><div><p class="eyebrow">07 / VAMOS CRIAR ALGO?</p><h2>Seu próximo projeto <em>começa aqui.</em></h2><p>Conte qual desafio sua empresa precisa resolver. Vamos conversar sobre o caminho mais adequado para transformá-lo em uma solução digital.</p><button type="button" id="contactTrigger" class="button button-primary contact-button">Solicitar uma proposta <span>↗</span></button><p class="contact-status" id="contactStatus">Canal comercial em configuração para o lançamento.</p></div><div class="contact-decoration"><span>VAMOS<br><i>CRIAR</i><br>JUNTOS.</span><b>↗</b></div></div></section>
   </main>
 
   <footer class="footer"><div class="container"><div class="footer-main"><div class="footer-brand"><strong>AZEREDO<span>.</span></strong><small>DESIGN & TECNOLOGIA</small><p>Projetos digitais com visão de negócio e atenção às pessoas.</p></div><div class="footer-links"><div><b>EXPLORAR</b><a href="#sobre">Sobre</a><a href="#solucoes">Soluções</a><a href="#portfolio">Portfólio</a></div><div><b>CONECTAR</b><a href="#contato">Contato</a><a href="https://github.com/fernandoazeredo" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="#apresentacao">Apresentação</a><a href="privacidade.html">Privacidade</a></div></div></div><div class="footer-bottom"><span>© <span id="year">2026</span> Azeredo Design & Tecnologia. Todos os direitos reservados.</span><span>CRIADO COM INTENÇÃO. DESENVOLVIDO COM TECNOLOGIA.</span><a href="#topo">Voltar ao topo ↑</a></div></div></footer>

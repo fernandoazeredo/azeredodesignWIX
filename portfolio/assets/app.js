@@ -5,7 +5,10 @@
   var labels = {ia:'IA & Automação',gestao:'Gestão & ERP',web:'Sites & Web',educacao:'Educação & Interatividade',operacao:'Operação & Logística'};
   var grid = document.getElementById('projectGrid');
   var projectDialog = document.getElementById('projectDialog');
-  var selected = 'todos';
+  var selected = 'todos', searchQuery = '';
+  var searchField=document.getElementById('projectSearch'), clearSearch=document.getElementById('clearProjectSearch');
+  function normalize(value){return String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
+  function updateFilterButtons(){document.querySelectorAll('.filter').forEach(function(b){var active=b.dataset.filter===selected;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))})}
   function safeText(node, text) { node.textContent = text == null ? '' : String(text); }
   function labelText(cat) { return labels[cat] || 'Solução digital'; }
   function makeProject(p) {
@@ -40,18 +43,22 @@
   }
   function render() {
     grid.replaceChildren();
-    var visible=projects.filter(function(p){return selected==='todos'||p.category===selected});
+    var visible=projects.filter(function(p){
+      if(selected!=='todos'&&p.category!==selected)return false;
+      return !searchQuery||normalize([p.name,p.label,p.summary,p.description,p.tech].join(' ')).includes(searchQuery);
+    });
     visible.forEach(function(p){grid.appendChild(makeProject(p))});
     safeText(document.getElementById('countProjects'),String(visible.length).padStart(2,'0'));
+    safeText(document.getElementById('projectResultText'),visible.length+' projeto'+(visible.length===1?' encontrado':'s encontrados')+' de '+projects.length+' cadastrados');
+    document.getElementById('projectsEmpty').hidden=visible.length!==0;
+    clearSearch.hidden=searchField.value.length===0;
   }
   document.querySelectorAll('.filter').forEach(function(button){
-    button.addEventListener('click',function(){
-      selected=button.dataset.filter;
-      document.querySelectorAll('.filter').forEach(function(other){
-        var active=other===button;other.classList.toggle('active',active);other.setAttribute('aria-pressed',String(active));
-      });render();
-    });
+    button.addEventListener('click',function(){selected=button.dataset.filter;updateFilterButtons();render()});
   });
+  searchField.addEventListener('input',function(){searchQuery=normalize(searchField.value);render()});
+  clearSearch.addEventListener('click',function(){searchField.value='';searchQuery='';render();searchField.focus()});
+  document.getElementById('resetProjectFilters').addEventListener('click',function(){selected='todos';searchQuery='';searchField.value='';updateFilterButtons();render();searchField.focus()});
   function openProject(p){
     safeText(document.getElementById('modalEyebrow'),p.label);
     safeText(document.getElementById('modalTitle'),p.name);

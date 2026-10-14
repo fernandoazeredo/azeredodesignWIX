@@ -58,3 +58,16 @@ Abra `http://localhost:8080/portfolio/`, na raiz do repositório.
 
 ## Domínio
 Após a produção Firebase estar funcionando, escolher e registrar domínio, verificando a disponibilidade no Registro.br. Em Firebase Hosting > Domínios personalizados, inserir o domínio e copiar os DNS exatos exibidos, mantendo o Wix antigo no ar até SSL/HTTPS validado.
+
+## Andamento complementar — 14/10/2026
+- Adicionada busca textual ao portfólio com normalização de acentos, além dos filtros.
+- Adicionadas perguntas frequentes sobre desenvolvimento, propostas e evolução.
+- Criado script de validação automática em `portfolio/.automation/validate-site.mjs`.
+- Separadas rotinas GitHub Actions em validação, Preview e produção.
+- Criado `portfolio/CONTINUIDADE_15-10-2026.md` com checklist de lançamento.
+
+### Conferência automática
+```bash
+node portfolio/.automation/validate-site.mjs
+```
+Executar a partir da raiz do novo repositório. Nenhuma dependência npm é necessária.

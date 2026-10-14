@@ -1,4 +1,4 @@
-name: Azeredo Design | Firebase Hosting
+name: Azeredo Design | Validar e publicar no Firebase
 
 on:
   push:
@@ -25,34 +25,43 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    name: Publicar Firebase Hosting
+  validar:
+    name: Verificar arquivos e integridade do site
     runs-on: ubuntu-latest
     steps:
-      - name: Obter código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Validar conteúdo, código, catálogo e PDF
+        run: node portfolio/.automation/validate-site.mjs
 
-      - name: Verificar arquivos essenciais
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -s portfolio/index.html
-          test -s portfolio/assets/app.js
-          test -s portfolio/assets/projects.js
-          test -s portfolio/assets/config.js
-          test -s portfolio/assets/style.css
-          test -s portfolio/assets/Azeredo-Design-Portfolio.pdf
-          test -s firebase.json
-          node --check portfolio/assets/app.js
-          node --check portfolio/assets/projects.js
-          node --check portfolio/assets/config.js
-          node -e "JSON.parse(require('fs').readFileSync('firebase.json','utf8'));"
-
-      - name: Deploy automático Firebase Hosting
+  preview:
+    name: Publicar visualização do Pull Request
+    needs: validar
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pré-visualização Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AZEREDO }}
           projectId: azeredo-design-institucional
-          channelId: ${{ github.event_name == 'push' && 'live' || '' }}
+          channelId: pr-${{ github.event.number }}
+          expires: 7d
+          entryPoint: .
+
+  producao:
+    name: Publicar site oficial
+    needs: validar
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy Firebase Hosting — produção
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AZEREDO }}
+          projectId: azeredo-design-institucional
+          channelId: live
           entryPoint: .
