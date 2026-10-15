@@ -73,9 +73,24 @@
     projectDialog.showModal();
   }
   document.getElementById('closeProject').addEventListener('click',function(){projectDialog.close()});
+  // Tema claro/escuro com preferência persistida e anúncio acessível.
+  var themeToggle=document.getElementById('themeToggle');
+  function setTheme(mode) {
+    var next=mode==='light'?'light':'dark';
+    document.documentElement.dataset.theme=next;
+    themeToggle.setAttribute('aria-pressed',String(next==='light'));
+    themeToggle.setAttribute('aria-label',next==='light'?'Ativar modo escuro':'Ativar modo claro');
+    themeToggle.setAttribute('title',next==='light'?'Mudar para modo escuro':'Mudar para modo claro');
+    var meta=document.querySelector('meta[name="theme-color"]');
+    if(meta)meta.content=next==='light'?'#f6f8fc':'#142a47';
+    try{localStorage.setItem('azeredo-theme',next)}catch(e){}
+  }
+  setTheme(document.documentElement.dataset.theme);
+  themeToggle.addEventListener('click',function(){setTheme(document.documentElement.dataset.theme==='light'?'dark':'light')});
   var menu=document.getElementById('mainNav'), toggle=document.getElementById('menuToggle');
   toggle.addEventListener('click',function(){var expanded=menu.classList.toggle('open');toggle.setAttribute('aria-expanded',String(expanded));toggle.setAttribute('aria-label',expanded?'Fechar menu':'Abrir menu')});
-  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');toggle.setAttribute('aria-expanded','false')})});
+  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.setAttribute('aria-label','Abrir menu')})});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open')){menu.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.focus()}});
   document.getElementById('year').textContent=new Date().getFullYear();
   var slides=[
     {tag:'01 / APRESENTAÇÃO',title:'Ideias que se tornam <span>soluções digitais.</span>',desc:'Azeredo Design & Tecnologia. Estratégia empresarial, experiências intuitivas e desenvolvimento digital sob medida.',tags:['SOFTWARE','GESTÃO','DESIGN','INTELIGÊNCIA ARTIFICIAL']},
